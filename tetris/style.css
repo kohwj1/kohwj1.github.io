@@ -1,0 +1,281 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap');
+
+:root {
+    --bg-color: #202028;
+    --canvas-bg: #000;
+    --text-color: #fff;
+    --accent-color: #ff0055;
+    --ui-bg: #32323e;
+    --neon-glow: 0 0 10px;
+    --gacha-color: #9d00ff;
+    /* Purple for Gacha */
+}
+
+body {
+    background: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Outfit', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+#game-wrapper {
+    display: flex;
+    gap: 20px;
+}
+
+#game-container,
+.panel-box {
+    background: var(--ui-bg);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+}
+
+#game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#side-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.panel-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    /* Fixed width for alignment */
+}
+
+.panel-label,
+.score-label {
+    font-weight: 700;
+    color: #aaa;
+    margin-bottom: 10px;
+    font-size: 1rem;
+    text-transform: uppercase;
+}
+
+#score-board {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+}
+
+#score {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    text-shadow: 0 0 10px rgba(255, 0, 85, 0.5);
+}
+
+canvas {
+    background-color: var(--canvas-bg);
+    display: block;
+    /* Neon glow effect for the entire board context - simplified for performance, 
+       real per-block neon is done via shadowBlur in JS or simple borders */
+    border: 2px solid #555;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+}
+
+/* Specific styling for the Next Piece canvas */
+#next {
+    width: 100px;
+    height: 100px;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+#gacha-btn {
+    width: 100%;
+    padding: 15px 0;
+    background: linear-gradient(135deg, #ff0055, #9d00ff);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(157, 0, 255, 0.4);
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    line-height: 1.2;
+}
+
+#gacha-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(157, 0, 255, 0.6);
+}
+
+#gacha-btn:active:not(:disabled) {
+    transform: translateY(1px);
+}
+
+#gacha-btn:disabled {
+    background: #555;
+    cursor: not-allowed;
+    box-shadow: none;
+    opacity: 0.7;
+}
+
+#gacha-timer {
+    font-size: 0.8rem;
+    font-weight: 400;
+    opacity: 0.8;
+}
+
+#controls-hint {
+    margin-top: auto;
+    /* Push to bottom of side panel if needed */
+    font-size: 0.8rem;
+    color: #888;
+    text-align: center;
+    line-height: 1.5;
+    background: transparent;
+}
+
+#controls-hint p {
+    margin: 2px 0;
+}
+
+/* Game Over Overlay */
+#game-over {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 15px;
+    backdrop-filter: blur(5px);
+    z-index: 10;
+}
+
+#game-over.hidden {
+    display: none;
+}
+
+#game-over h1 {
+    font-size: 3rem;
+    color: #fff;
+    margin: 0 0 20px 0;
+    text-shadow: 0 0 20px var(--accent-color);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+#game-over p {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+}
+
+#restart-btn {
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    color: #fff;
+    background: var(--accent-color);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(255, 0, 85, 0.6);
+    transition: all 0.2s ease;
+}
+
+#restart-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(255, 0, 85, 0.8);
+}
+
+/* Pause Overlay */
+#pause-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 15px;
+    backdrop-filter: blur(5px);
+    z-index: 20;
+    /* Higher than game over */
+}
+
+#pause-overlay.hidden {
+    display: none;
+}
+
+#pause-overlay h1 {
+    font-size: 3rem;
+    color: #fff;
+    margin: 0 0 30px 0;
+    text-shadow: 0 0 20px var(--accent-color);
+    letter-spacing: 5px;
+}
+
+.menu-btn {
+    padding: 12px 35px;
+    font-size: 1.1rem;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    color: #fff;
+    background: transparent;
+    border: 2px solid var(--accent-color);
+    border-radius: 50px;
+    cursor: pointer;
+    margin: 10px 0;
+    transition: all 0.2s ease;
+    width: 200px;
+}
+
+.menu-btn:hover {
+    background: var(--accent-color);
+    box-shadow: 0 0 15px rgba(255, 0, 85, 0.6);
+}
+
+/* Flash animation for clearing lines */
+@keyframes flash {
+    0% {
+        background: var(--canvas-bg);
+    }
+
+    50% {
+        background: #333;
+    }
+
+    100% {
+        background: var(--canvas-bg);
+    }
+}
+
+.flash {
+    animation: flash 0.1s;
+}
