@@ -331,7 +331,11 @@ difficultySelect.addEventListener('change', (e) => {
     initGame();
 });
 
-calculateBtn.addEventListener('click', validateBoard);
+calculateBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    hideTooltip();
+    validateBoard();
+});
 
 clearAllBtn.addEventListener('click', () => {
     if (confirm("입력한 내용을 모두 리셋합니다. 계속하시겠습니까?")) {
