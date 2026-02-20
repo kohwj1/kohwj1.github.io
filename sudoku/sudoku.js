@@ -32,6 +32,7 @@ function initGame() {
     previousDifficulty = difficultySelect.value;
     generatePuzzle();
     renderBoard();
+    if (typeof updateCalculateButtonState === 'function') updateCalculateButtonState();
 }
 
 // ===== Board Generation (Backtracking Algorithm) =====
@@ -213,6 +214,29 @@ function hideTooltip() {
     tooltipNumpad.classList.remove('visible');
 }
 
+function updateCalculateButtonState() {
+    let hasEmpty = false;
+    for (let r = 0; r < GRID_SIZE; r++) {
+        for (let c = 0; c < GRID_SIZE; c++) {
+            if (currentBoard[r][c] === 0) {
+                hasEmpty = true;
+                break;
+            }
+        }
+        if (hasEmpty) break;
+    }
+
+    if (hasEmpty) {
+        calculateBtn.disabled = true;
+        calculateBtn.style.opacity = '0.5';
+        calculateBtn.style.cursor = 'not-allowed';
+    } else {
+        calculateBtn.disabled = false;
+        calculateBtn.style.opacity = '1';
+        calculateBtn.style.cursor = 'pointer';
+    }
+}
+
 // ===== Input Handling =====
 
 function setCellValue(val) {
@@ -229,6 +253,8 @@ function setCellValue(val) {
         currentBoard[row][col] = val;
         element.textContent = val;
     }
+
+    updateCalculateButtonState();
 }
 
 // Keyboard
@@ -343,17 +369,12 @@ clearAllBtn.addEventListener('click', () => {
             for (let c = 0; c < GRID_SIZE; c++) {
                 if (initialBoard[r][c] === 0) {
                     currentBoard[r][c] = 0;
-                    const cell = document.querySelector(`.cell[data-row="${r}"][data-col="${c}"]`);
-                    if (cell) {
-                        cell.textContent = '';
-                        cell.classList.remove('error', 'correct');
-                    }
                 }
             }
         }
+        renderBoard();
+        updateCalculateButtonState();
         hideTooltip();
-        clearHighlights();
-        selectedCell = null;
     }
 });
 
