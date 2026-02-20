@@ -233,11 +233,6 @@ select.btn {
     animation: shake 0.4s ease-in-out;
 }
 
-.cell.correct {
-    color: var(--accent-color);
-    font-weight: 600;
-}
-
 @keyframes shake {
 
     0%,
@@ -325,7 +320,7 @@ select.btn {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(var(--bg-color), 0.9);
+    background-color: #000000cc;
     backdrop-filter: blur(4px);
     display: flex;
     flex-direction: column;
@@ -345,6 +340,7 @@ select.btn {
 .win-message p {
     font-size: 1.2rem;
     margin-bottom: 24px;
+    color: white;
 }
 
 .hidden {
