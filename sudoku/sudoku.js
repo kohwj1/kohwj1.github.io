@@ -28,6 +28,9 @@ const DIFFICULTIES = {
 // ===== Initialization =====
 function initGame() {
     winMessage.classList.add('hidden');
+    clearAllBtn.disabled = false;
+    clearAllBtn.style.opacity = '1';
+    clearAllBtn.style.cursor = 'pointer';
     if (typeof hideTooltip === 'function') hideTooltip();
     previousDifficulty = difficultySelect.value;
     generatePuzzle();
@@ -330,6 +333,9 @@ function validateBoard() {
 
 function showWinMessage() {
     winMessage.classList.remove('hidden');
+    clearAllBtn.disabled = true;
+    clearAllBtn.style.opacity = '0.5';
+    clearAllBtn.style.cursor = 'not-allowed';
 }
 
 // ===== Event Listeners =====
